@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/betagouv/gravitee-api-extension#readme",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "fastify": "^3.10.1",
     "reflect-metadata": "^0.1.13",
     "sql.js": "^1.4.0",
