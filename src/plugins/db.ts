@@ -13,7 +13,6 @@ export default fp(async (server, options: ConnectionOptions) => {
     Object.assign(
       {
         synchronize: false,
-        entities: ["src/entity/*.ts"],
       },
       connectionOptions,
       options
