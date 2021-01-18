@@ -1,4 +1,5 @@
 import fastify from 'fastify'
+import "reflect-metadata";
 
 const server = fastify()
 
