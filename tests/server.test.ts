@@ -1,8 +1,18 @@
+import { FastifyInstance } from "fastify";
 import { build } from "../src/app";
 
-describe("Server smoke test", () => {
-  test("server responds to /ping", async () => {
-    const app = build();
+describe("Server", () => {
+  let app: FastifyInstance;
+
+  beforeAll(() => {
+    app = build();
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it("responds to /ping", async (done) => {
     const response = await app.inject({
       method: "GET",
       url: "/ping",
@@ -10,6 +20,17 @@ describe("Server smoke test", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.payload).toBe("pong\n");
-    app.close();
+    done();
+  });
+
+  it("lists the application ids", async (done) => {
+    const response = await app.inject({
+      method: "GET",
+      url: "/applications",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(JSON.parse(response.body)).toEqual([]);
+    done();
   });
 });

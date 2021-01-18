@@ -8,11 +8,16 @@ describe("The database", () => {
     app = build();
   });
 
-  it.only("is accessible in the server instance", async () => {
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it("is accessible in the server instance", async (done) => {
     await app.inject({
       method: "GET",
       path: "/",
     });
     expect(app.db).toBeDefined();
+    done();
   });
 });
