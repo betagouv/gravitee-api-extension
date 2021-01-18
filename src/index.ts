@@ -1,11 +1,7 @@
-import fastify from 'fastify'
+import { build } from './app'
 import "reflect-metadata";
 
-const server = fastify()
-
-server.get('/ping', async (request, reply) => {
-  return 'pong\n'
-})
+const server = build();
 
 server.listen(8080, (err, address) => {
   if (err) {
