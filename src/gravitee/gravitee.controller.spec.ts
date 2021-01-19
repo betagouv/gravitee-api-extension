@@ -23,7 +23,7 @@ describe('GraviteeController', () => {
 
   describe('getApplication', () => {
     it('calls the Gravitee Service', async () => {
-      await controller.getApplication();
+      await controller.getApplication({ id: 'yolo' });
 
       expect(getApplicationDetailsMock).toHaveBeenCalledWith('yolo');
     });
