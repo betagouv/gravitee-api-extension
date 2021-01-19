@@ -1,17 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Application } from 'src/gravitee/application.entity';
-import { Repository } from 'typeorm';
+import { Application } from 'src/gravitee/application.entity'; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { GraviteeService } from 'src/gravitee/gravitee.service';
 
 @Controller()
 export class GraviteeController {
-  constructor(
-    @InjectRepository(Application)
-    private applicationRepository: Repository<Application>,
-  ) {}
+  constructor(private graviteeService: GraviteeService) {}
 
-  @Get('/applications')
-  getApplications(): Promise<Application[]> {
-    return this.applicationRepository.find();
+  @Get('/application')
+  getApplication(): Promise<Application> {
+    return this.graviteeService.getApplicationDetails('yolo');
   }
 }

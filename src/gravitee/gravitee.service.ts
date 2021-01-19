@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Application } from 'src/gravitee/application.entity';
+import { Application } from './application.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class GraviteeService {
     private applicationRepository: Repository<Application>,
   ) {}
 
-  async getApplicationDetails(applicationId: string) {
-    return [];
+  async getApplicationDetails(applicationId: string): Promise<Application> {
+    return this.applicationRepository.findOneOrFail(applicationId);
   }
 }
