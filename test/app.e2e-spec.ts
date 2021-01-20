@@ -32,10 +32,20 @@ describe('AppController (e2e)', () => {
   });
 
   it('/ (GET)', () => {
-    console.log('Request');
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
       .expect('Hello World!');
+  });
+
+  it('/applications/non-uuid (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/applications/non-uuid')
+      .expect(400);
+  });
+  it('/applications/missing-uuid (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/applications/a8fb65ee-d160-403b-9926-501cdf79a13e')
+      .expect(404);
   });
 });
