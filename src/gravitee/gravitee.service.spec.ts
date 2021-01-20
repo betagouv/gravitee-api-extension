@@ -28,7 +28,7 @@ describe('GraviteeService', () => {
       const expectedResult = {
         id: 'the-application-id',
         name: 'Test application name',
-        scopes: ['test_scope_1', 'test_scope_2'],
+        scopes: 'test_scope_1,test_scope_2',
       };
       applicationRepository.findOneOrFail.mockReturnValue({
         id: expectedResult.id,
