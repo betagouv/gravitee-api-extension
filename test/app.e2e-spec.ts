@@ -1,13 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { GraviteeModule } from 'src/gravitee/gravitee.module';
 import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
+import { Repository } from 'typeorm';
+import { Application } from 'src/gravitee/application.entity';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let applicationRepository: Repository<Application>;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -23,6 +26,9 @@ describe('AppController (e2e)', () => {
       providers: [AppService],
     }).compile();
 
+    applicationRepository = moduleFixture.get<Repository<Application>>(
+      getRepositoryToken(Application),
+    );
     app = moduleFixture.createNestApplication();
     await app.init();
   });
@@ -43,9 +49,22 @@ describe('AppController (e2e)', () => {
       .get('/applications/non-uuid')
       .expect(400);
   });
+
   it('/applications/missing-uuid (GET)', () => {
     return request(app.getHttpServer())
       .get('/applications/a8fb65ee-d160-403b-9926-501cdf79a13e')
       .expect(404);
+  });
+
+  it('/applications/existing-uuid (GET)', async () => {
+    const application = {
+      id: '63acf6a4-208a-400a-bd7b-ed8d621fefec',
+      name: 'test application name',
+    };
+    await applicationRepository.save(application);
+
+    return request(app.getHttpServer())
+      .get(`/applications/${application.id}`)
+      .expect(200);
   });
 });
