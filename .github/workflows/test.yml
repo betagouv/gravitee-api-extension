@@ -1,4 +1,4 @@
-name: Tests
+name: CI
 
 on: [push]
 
@@ -26,3 +26,10 @@ jobs:
           node-version: "12.x"
       - run: npm ci
       - run: npm run build
+
+  docker-bundling:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the docker app
+        run: docker build -t test-gravitee-extension-api .
