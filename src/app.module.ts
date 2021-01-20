@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraviteeModule } from 'src/gravitee/gravitee.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import databaseConfig from './config/database';
 
 @Module({
@@ -19,7 +17,5 @@ import databaseConfig from './config/database';
     }),
     GraviteeModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

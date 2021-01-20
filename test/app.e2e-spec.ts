@@ -3,8 +3,6 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { GraviteeModule } from 'src/gravitee/gravitee.module';
-import { AppController } from 'src/app.controller';
-import { AppService } from 'src/app.service';
 import { Repository } from 'typeorm';
 import { Application } from 'src/gravitee/application.entity';
 
@@ -22,8 +20,6 @@ describe('AppController (e2e)', () => {
         }),
         GraviteeModule,
       ],
-      controllers: [AppController],
-      providers: [AppService],
     }).compile();
 
     applicationRepository = moduleFixture.get<Repository<Application>>(
@@ -38,10 +34,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+    return request(app.getHttpServer()).get('/').expect(404);
   });
 
   it('/applications/non-uuid (GET)', () => {
