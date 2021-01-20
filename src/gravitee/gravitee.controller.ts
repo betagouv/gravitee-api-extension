@@ -6,10 +6,10 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Application } from 'src/gravitee/application.entity'; // eslint-disable-line @typescript-eslint/no-unused-vars
 import { FindOneApplicationParams } from 'src/gravitee/application.params';
 import { EntityNotFoundExceptionFilter } from 'src/gravitee/entity-not-found-exception.filter';
 import { GraviteeService } from 'src/gravitee/gravitee.service';
+import { EnrichedApplication } from 'src/gravitee/types'; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 @Controller()
 export class GraviteeController {
@@ -20,7 +20,7 @@ export class GraviteeController {
   @UsePipes(new ValidationPipe())
   getApplication(
     @Param() params: FindOneApplicationParams,
-  ): Promise<Application> {
+  ): Promise<EnrichedApplication> {
     return this.graviteeService.getApplicationDetails(params.id);
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Application } from './application.entity';
 import { Repository } from 'typeorm';
+import { EnrichedApplication } from 'src/gravitee/types';
 
 @Injectable()
 export class GraviteeService {
@@ -10,7 +11,23 @@ export class GraviteeService {
     private applicationRepository: Repository<Application>,
   ) {}
 
-  async getApplicationDetails(applicationId: string): Promise<Application> {
-    return this.applicationRepository.findOneOrFail(applicationId);
+  async getApplicationDetails(
+    applicationId: string,
+  ): Promise<EnrichedApplication> {
+    const application = await this.applicationRepository.findOneOrFail(
+      applicationId,
+    );
+    const enrichedApplication = {
+      id: application.id,
+      name: application.name,
+      scopes: '',
+    };
+    application.metadata.forEach((metadata) => {
+      if (metadata.key === 'scopes') {
+        enrichedApplication.scopes = metadata.value;
+      }
+    });
+
+    return enrichedApplication;
   }
 }

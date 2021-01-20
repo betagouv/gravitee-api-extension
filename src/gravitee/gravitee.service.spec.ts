@@ -28,8 +28,22 @@ describe('GraviteeService', () => {
       const expectedResult = {
         id: 'the-application-id',
         name: 'Test application name',
+        scopes: ['test_scope_1', 'test_scope_2'],
       };
-      applicationRepository.findOneOrFail.mockReturnValue(expectedResult);
+      applicationRepository.findOneOrFail.mockReturnValue({
+        id: expectedResult.id,
+        name: expectedResult.name,
+        metadata: [
+          {
+            key: 'client_id',
+            value: 'croute',
+          },
+          {
+            key: 'scopes',
+            value: 'test_scope_1,test_scope_2',
+          },
+        ],
+      });
       const actualResult = await graviteeService.getApplicationDetails(
         expectedResult.id,
       );
