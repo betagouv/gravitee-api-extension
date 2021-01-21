@@ -35,11 +35,11 @@ describe('GraviteeService', () => {
         name: expectedResult.name,
         metadata: [
           {
-            key: 'client_id',
+            name: 'client_id',
             value: 'croute',
           },
           {
-            key: 'scopes',
+            name: 'scopes',
             value: 'test_scope_1,test_scope_2',
           },
         ],

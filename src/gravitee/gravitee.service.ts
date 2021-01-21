@@ -22,9 +22,9 @@ export class GraviteeService {
       name: application.name,
       scopes: '',
     };
-    application.metadata.forEach((metadata) => {
-      if (metadata.key === 'scopes') {
-        enrichedApplication.scopes = metadata.value;
+    application.metadata.forEach((metadatum) => {
+      if (metadatum.name === 'scopes') {
+        enrichedApplication.scopes = metadatum.value;
       }
     });
 

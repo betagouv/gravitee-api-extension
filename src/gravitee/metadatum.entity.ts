@@ -2,18 +2,18 @@ import { Application } from 'src/gravitee/application.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity({
-  name: 'application_metadata',
+  name: 'metadata',
 })
-export class ApplicationMetadata {
+export class Metadatum {
   @ManyToOne(() => Application, (application) => application.metadata, {
     primary: true,
   })
-  @JoinColumn({ name: 'application_id' })
+  @JoinColumn({ name: 'reference_id' })
   application: Application;
 
-  @PrimaryColumn({ name: 'k' })
-  key: string;
+  @PrimaryColumn()
+  name: string;
 
-  @Column({ name: 'v' })
+  @Column()
   value: string;
 }
