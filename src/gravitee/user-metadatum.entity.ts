@@ -4,8 +4,8 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 @Entity({
   name: 'metadata',
 })
-export class Metadatum {
-  @ManyToOne(() => Application, (application) => application.metadata, {
+export class UserMetadatum {
+  @ManyToOne(() => Application, (application) => application.userMetadata, {
     primary: true,
   })
   @JoinColumn({ name: 'reference_id' })

@@ -33,7 +33,7 @@ describe('GraviteeService', () => {
       applicationRepository.findOneOrFail.mockReturnValue({
         id: expectedResult.id,
         name: expectedResult.name,
-        metadata: [
+        userMetadata: [
           {
             name: 'client_id',
             value: 'croute',

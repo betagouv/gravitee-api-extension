@@ -5,12 +5,12 @@ import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { GraviteeModule } from 'src/gravitee/gravitee.module';
 import { Repository } from 'typeorm';
 import { Application } from 'src/gravitee/application.entity';
-import { Metadatum } from 'src/gravitee/metadatum.entity';
+import { UserMetadatum } from 'src/gravitee/user-metadatum.entity';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let applicationRepository: Repository<Application>;
-  let metadatumRepository: Repository<Metadatum>;
+  let userMetadatumRepository: Repository<UserMetadatum>;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -27,8 +27,8 @@ describe('AppController (e2e)', () => {
     applicationRepository = moduleFixture.get<Repository<Application>>(
       getRepositoryToken(Application),
     );
-    metadatumRepository = moduleFixture.get<Repository<Metadatum>>(
-      getRepositoryToken(Metadatum),
+    userMetadatumRepository = moduleFixture.get<Repository<UserMetadatum>>(
+      getRepositoryToken(UserMetadatum),
     );
     app = moduleFixture.createNestApplication();
     await app.init();
@@ -55,30 +55,30 @@ describe('AppController (e2e)', () => {
   });
 
   it('/applications/existing-uuid (GET)', async () => {
-    const metadatum1 = new Metadatum();
-    metadatum1.name = 'scopes';
-    metadatum1.value = 'croute,moustaki';
+    const userMetadatum1 = new UserMetadatum();
+    userMetadatum1.name = 'scopes';
+    userMetadatum1.value = 'croute,moustaki';
 
-    const metadatum2 = new Metadatum();
-    metadatum2.name = 'noise';
-    metadatum2.value = 'lol';
+    const userMetadatum2 = new UserMetadatum();
+    userMetadatum2.name = 'noise';
+    userMetadatum2.value = 'lol';
 
     const application = new Application();
     application.id = '63acf6a4-208a-400a-bd7b-ed8d621fefec';
     application.name = 'test application name';
 
-    metadatum1.application = application;
-    metadatum2.application = application;
+    userMetadatum1.application = application;
+    userMetadatum2.application = application;
 
     await applicationRepository.save(application);
-    await metadatumRepository.save([metadatum1, metadatum2]);
+    await userMetadatumRepository.save([userMetadatum1, userMetadatum2]);
 
     return request(app.getHttpServer())
       .get(`/applications/${application.id}`)
       .expect(200, {
         id: application.id,
         name: application.name,
-        scopes: metadatum1.value,
+        scopes: userMetadatum1.value,
       });
   });
 });

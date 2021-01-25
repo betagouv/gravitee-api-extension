@@ -1,4 +1,4 @@
-import { Metadatum } from 'src/gravitee/metadatum.entity';
+import { UserMetadatum } from 'src/gravitee/user-metadatum.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
@@ -11,8 +11,12 @@ export class Application {
   @Column()
   name: string;
 
-  @OneToMany(() => Metadatum, (metadatum) => metadatum.application, {
-    eager: true,
-  })
-  metadata: Metadatum[];
+  @OneToMany(
+    () => UserMetadatum,
+    (userMetadatum) => userMetadatum.application,
+    {
+      eager: true,
+    },
+  )
+  userMetadata: UserMetadatum[];
 }
