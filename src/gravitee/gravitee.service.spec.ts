@@ -29,6 +29,7 @@ describe('GraviteeService', () => {
         id: 'the-application-id',
         name: 'Test application name',
         scopes: 'test_scope_1,test_scope_2',
+        clientId: 'the client id',
       };
       applicationRepository.findOneOrFail.mockReturnValue({
         id: expectedResult.id,
@@ -41,6 +42,16 @@ describe('GraviteeService', () => {
           {
             name: 'scopes',
             value: 'test_scope_1,test_scope_2',
+          },
+        ],
+        applicationMetadata: [
+          {
+            name: 'client_id',
+            value: 'the client id',
+          },
+          {
+            name: 'type',
+            value: 'web',
           },
         ],
       });

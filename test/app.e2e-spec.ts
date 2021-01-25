@@ -6,11 +6,13 @@ import { GraviteeModule } from 'src/gravitee/gravitee.module';
 import { Repository } from 'typeorm';
 import { Application } from 'src/gravitee/application.entity';
 import { UserMetadatum } from 'src/gravitee/user-metadatum.entity';
+import { ApplicationMetadatum } from 'src/gravitee/application-metadatum';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let applicationRepository: Repository<Application>;
   let userMetadatumRepository: Repository<UserMetadatum>;
+  let applicationMetadatumRepository: Repository<ApplicationMetadatum>;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -30,6 +32,9 @@ describe('AppController (e2e)', () => {
     userMetadatumRepository = moduleFixture.get<Repository<UserMetadatum>>(
       getRepositoryToken(UserMetadatum),
     );
+    applicationMetadatumRepository = moduleFixture.get<
+      Repository<ApplicationMetadatum>
+    >(getRepositoryToken(ApplicationMetadatum));
     app = moduleFixture.createNestApplication();
     await app.init();
   });
@@ -63,15 +68,29 @@ describe('AppController (e2e)', () => {
     userMetadatum2.name = 'noise';
     userMetadatum2.value = 'lol';
 
+    const applicationMetadatum1 = new ApplicationMetadatum();
+    applicationMetadatum1.name = 'client_id';
+    applicationMetadatum1.value = 'the client id';
+
+    const applicationMetadatum2 = new ApplicationMetadatum();
+    applicationMetadatum2.name = 'type';
+    applicationMetadatum2.value = 'web';
+
     const application = new Application();
     application.id = '63acf6a4-208a-400a-bd7b-ed8d621fefec';
     application.name = 'test application name';
 
     userMetadatum1.application = application;
     userMetadatum2.application = application;
+    applicationMetadatum1.application = application;
+    applicationMetadatum2.application = application;
 
     await applicationRepository.save(application);
     await userMetadatumRepository.save([userMetadatum1, userMetadatum2]);
+    await applicationMetadatumRepository.save([
+      applicationMetadatum1,
+      applicationMetadatum2,
+    ]);
 
     return request(app.getHttpServer())
       .get(`/applications/${application.id}`)
@@ -79,6 +98,7 @@ describe('AppController (e2e)', () => {
         id: application.id,
         name: application.name,
         scopes: userMetadatum1.value,
+        clientId: applicationMetadatum1.value,
       });
   });
 });

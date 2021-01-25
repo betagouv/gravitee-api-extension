@@ -21,10 +21,16 @@ export class GraviteeService {
       id: application.id,
       name: application.name,
       scopes: '',
+      clientId: '',
     };
     application.userMetadata.forEach((userMetadatum) => {
       if (userMetadatum.name === 'scopes') {
         enrichedApplication.scopes = userMetadatum.value;
+      }
+    });
+    application.applicationMetadata.forEach((applicationMetadatum) => {
+      if (applicationMetadatum.name === 'client_id') {
+        enrichedApplication.clientId = applicationMetadatum.value;
       }
     });
 
