@@ -4,11 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraviteeModule } from 'src/gravitee/gravitee.module';
 import databaseConfig from './config/database';
 import serverConfig from './config/server';
+import graviteeConfig from './config/gravitee';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [databaseConfig, serverConfig],
+      load: [databaseConfig, serverConfig, graviteeConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
