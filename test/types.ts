@@ -9,6 +9,7 @@ export const repositoryMockFactory: () => MockType<Repository<any>> = jest.fn(
     find: jest.fn(),
     update: jest.fn(),
     save: jest.fn(),
+    createQueryBuilder: jest.fn(),
   }),
 );
 export type MockType<T> = {

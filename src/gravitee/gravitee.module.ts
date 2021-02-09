@@ -5,6 +5,8 @@ import { Application } from 'src/gravitee/application.entity';
 import { GraviteeController } from 'src/gravitee/gravitee.controller';
 import { GraviteeService } from 'src/gravitee/gravitee.service';
 import { ApplicationMetadatum } from 'src/gravitee/application-metadatum';
+import { ConfigService } from '@nestjs/config';
+import { Key } from 'src/gravitee/key.entity';
 
 @Module({
   imports: [
@@ -12,9 +14,10 @@ import { ApplicationMetadatum } from 'src/gravitee/application-metadatum';
       Application,
       UserMetadatum,
       ApplicationMetadatum,
+      Key,
     ]),
   ],
   controllers: [GraviteeController],
-  providers: [GraviteeService],
+  providers: [GraviteeService, ConfigService],
 })
 export class GraviteeModule {}
