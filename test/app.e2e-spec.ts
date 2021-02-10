@@ -157,6 +157,40 @@ describe('AppController (e2e)', () => {
       .expect(404);
   });
 
+  it('/tokens/replace-legacy (POST) with revoked token subscribed to API Particulier', async () => {
+    const legacyToken = 'the-legacy-token';
+    const legacyTokenHash =
+      'c840ffc9376fd52afef2c42f23af2f74d116118b1a77f795f3163628f39d44cd6518d660868725be8f6c4dc479d7a81745b39c7aef726f412e5e7cafe564ae67';
+    const newApiKey = 'new-api-key' as ApiKey;
+
+    const application = new Application();
+    application.id = '63acf6a4-208a-400a-bd7b-ed8d621fefec';
+    application.name = 'test application name';
+
+    const userMetadatum1 = new UserMetadatum();
+    userMetadatum1.name = 'legacy-token-hash';
+    userMetadatum1.value = legacyTokenHash;
+
+    const key = new Key();
+    key.application = application;
+    key.plan = 'api-particulier-plan-id';
+    key.key = newApiKey;
+    key.revoked = true;
+
+    userMetadatum1.application = application;
+
+    await applicationRepository.save(application);
+    await userMetadatumRepository.save(userMetadatum1);
+    await keyRepository.save(key);
+
+    return request(app.getHttpServer())
+      .post(`/tokens/replace-legacy`)
+      .send({
+        legacyToken,
+      })
+      .expect(404);
+  });
+
   it('/tokens/replace-legacy (POST) with known token subscribed to API Particulier', async () => {
     const legacyToken = 'the-legacy-token';
     const legacyTokenHash =
@@ -175,6 +209,7 @@ describe('AppController (e2e)', () => {
     key.application = application;
     key.plan = 'api-particulier-plan-id';
     key.key = newApiKey;
+    key.revoked = false;
 
     userMetadatum1.application = application;
 
