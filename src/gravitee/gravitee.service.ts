@@ -54,6 +54,7 @@ export class GraviteeService {
       .andWhere('key.plan = :plan', {
         plan: this.configService.get('gravitee.apiParticulierPlanId'),
       })
+      .andWhere('key.revoked = FALSE')
       .getOneOrFail();
 
     return key.key as ApiKey;

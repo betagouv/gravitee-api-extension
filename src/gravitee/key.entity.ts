@@ -21,4 +21,7 @@ export class Key {
 
   @Column('uuid')
   plan: string;
+
+  @Column()
+  revoked: boolean;
 }

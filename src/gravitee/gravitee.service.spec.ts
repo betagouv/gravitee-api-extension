@@ -41,7 +41,9 @@ describe('GraviteeService', () => {
         innerJoin: jest.fn().mockReturnValue({
           where: jest.fn().mockReturnValue({
             andWhere: jest.fn().mockReturnValue({
-              getOneOrFail: getOneOrFailMock,
+              andWhere: jest.fn().mockReturnValue({
+                getOneOrFail: getOneOrFailMock,
+              }),
             }),
           }),
         }),
